@@ -3,11 +3,11 @@
 // so this plugin replaces only those disabled DOM rows while the menu is open.
 
 const ID = "b2766cf5-7927-43c7-9453-f499fe3370b5";
-const LEGACY_ID = "statusbar-cleanup";
-const STYLE_ID = "hermes-statusbar-visibility-style";
-const HIDDEN_ATTRIBUTE = "data-statusbar-visibility-hidden";
-const CORE_ROW_ATTRIBUTE = "data-statusbar-visibility-core-row";
-const CUSTOM_ROW_ATTRIBUTE = "data-statusbar-visibility-row";
+const LEGACY_ID = "status-bar-cleanup";
+const STYLE_ID = "hermes-status-bar-visibility-style";
+const HIDDEN_ATTRIBUTE = "data-status-bar-visibility-hidden";
+const CORE_ROW_ATTRIBUTE = "data-status-bar-visibility-core-row";
+const CUSTOM_ROW_ATTRIBUTE = "data-status-bar-visibility-row";
 const STORAGE_KEY = "visibility-v2";
 
 const ITEMS = [
