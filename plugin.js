@@ -168,8 +168,6 @@ function patchMenus(visibility, setVisibility) {
 export default {
   id: ID,
   name: "Status Bar Visibility",
-  description:
-    "Adds working Command Center and version visibility switches to the status-bar menu.",
   defaultEnabled: false,
   register(ctx) {
     document.getElementById(STYLE_ID)?.remove();
