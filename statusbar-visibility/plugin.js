@@ -2,11 +2,12 @@
 // The SDK has no supported contribution point inside this core context menu,
 // so this plugin replaces only those disabled DOM rows while the menu is open.
 
-const ID = "statusbar-cleanup";
-const STYLE_ID = "hermes-statusbar-cleanup-style";
-const HIDDEN_ATTRIBUTE = "data-statusbar-cleanup-hidden";
-const CORE_ROW_ATTRIBUTE = "data-statusbar-cleanup-core-row";
-const CUSTOM_ROW_ATTRIBUTE = "data-statusbar-cleanup-row";
+const ID = "b2766cf5-7927-43c7-9453-f499fe3370b5";
+const LEGACY_ID = "statusbar-cleanup";
+const STYLE_ID = "hermes-statusbar-visibility-style";
+const HIDDEN_ATTRIBUTE = "data-statusbar-visibility-hidden";
+const CORE_ROW_ATTRIBUTE = "data-statusbar-visibility-core-row";
+const CUSTOM_ROW_ATTRIBUTE = "data-statusbar-visibility-row";
 const STORAGE_KEY = "visibility-v2";
 
 const ITEMS = [
@@ -87,7 +88,7 @@ function rowLabel(row) {
 function updateCustomRow(row, hidden) {
   row.setAttribute("aria-checked", String(!hidden));
   row.setAttribute("data-state", hidden ? "unchecked" : "checked");
-  const indicator = row.querySelector("[data-statusbar-cleanup-indicator]");
+  const indicator = row.querySelector("[data-statusbar-visibility-indicator]");
   const mark = hidden ? "" : "✓";
   // Reassigning textContent creates a child-list mutation even when unchanged.
   // Keep this idempotent so future menu-refresh hooks cannot form a render loop.
@@ -109,7 +110,7 @@ function createCustomRow(template, item, visibility, setVisibility) {
 
   const indicator = document.createElement("span");
   indicator.setAttribute("aria-hidden", "true");
-  indicator.setAttribute("data-statusbar-cleanup-indicator", "");
+  indicator.setAttribute("data-statusbar-visibility-indicator", "");
   indicator.style.marginLeft = "auto";
   indicator.style.minWidth = "1rem";
   indicator.style.textAlign = "center";
@@ -166,7 +167,7 @@ function patchMenus(visibility, setVisibility) {
 
 export default {
   id: ID,
-  name: "Status Bar Cleanup",
+  name: "Status Bar Visibility",
   description:
     "Adds working Command Center and version visibility switches to the status-bar menu.",
   defaultEnabled: false,
@@ -179,10 +180,15 @@ export default {
     document.head.append(style);
 
     const localStorageKey = `${ID}:${STORAGE_KEY}`;
+    const legacyLocalStorageKey = `${LEGACY_ID}:${STORAGE_KEY}`;
     let visibility = { ...DEFAULT_HIDDEN };
     try {
       visibility = normalizeVisibility(
-        JSON.parse(window.localStorage.getItem(localStorageKey) || "null"),
+        JSON.parse(
+          window.localStorage.getItem(localStorageKey) ||
+            window.localStorage.getItem(legacyLocalStorageKey) ||
+            "null",
+        ),
       );
     } catch {
       // Invalid old data falls back to the default hidden state.
@@ -199,6 +205,7 @@ export default {
           localStorageKey,
           JSON.stringify(visibility),
         );
+        window.localStorage.removeItem(legacyLocalStorageKey);
       } catch {
         // Current-window toggling still works if persistence is unavailable.
       }
