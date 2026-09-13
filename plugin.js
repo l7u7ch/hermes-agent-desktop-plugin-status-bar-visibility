@@ -123,12 +123,10 @@ function createCustomRow(template, item, visibility, setVisibility) {
   row.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") toggle(event);
   });
-  row.addEventListener("mouseenter", () =>
-    row.setAttribute("data-highlighted", ""),
-  );
-  row.addEventListener("mouseleave", () =>
-    row.removeAttribute("data-highlighted"),
-  );
+  // The template styles its active state with `focus:`. Unlike Radix's native
+  // menu items, this replacement row has no pointer handler that moves focus,
+  // so mirror that behavior to preserve the menu's hover feedback.
+  row.addEventListener("mouseenter", () => row.focus({ preventScroll: true }));
   updateCustomRow(row, visibility[item.key]);
   return row;
 }
