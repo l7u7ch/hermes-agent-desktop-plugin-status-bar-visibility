@@ -3,7 +3,6 @@
 // so this plugin replaces only those disabled DOM rows while the menu is open.
 
 const ID = "b2766cf5-7927-43c7-9453-f499fe3370b5";
-const STYLE_ID = "hermes-status-bar-visibility-style";
 const HIDDEN_ATTRIBUTE = "data-status-bar-visibility-hidden";
 const CORE_ROW_ATTRIBUTE = "data-status-bar-visibility-core-row";
 const CUSTOM_ROW_ATTRIBUTE = "data-status-bar-visibility-row";
@@ -169,13 +168,6 @@ export default {
   name: "Status Bar Visibility",
   defaultEnabled: false,
   register(ctx) {
-    document.getElementById(STYLE_ID)?.remove();
-
-    const style = document.createElement("style");
-    style.id = STYLE_ID;
-    style.textContent = `[${HIDDEN_ATTRIBUTE}] { display: none !important; }`;
-    document.head.append(style);
-
     const localStorageKey = `${ID}:${STORAGE_KEY}`;
     let visibility = { ...DEFAULT_HIDDEN };
     try {
@@ -216,7 +208,6 @@ export default {
 
     ctx.onDispose(() => {
       document.removeEventListener("contextmenu", scheduleRender, true);
-      style.remove();
       document.querySelectorAll(`[${HIDDEN_ATTRIBUTE}]`).forEach(show);
       document.querySelectorAll(`[${CORE_ROW_ATTRIBUTE}]`).forEach((row) => {
         row.removeAttribute(CORE_ROW_ATTRIBUTE);

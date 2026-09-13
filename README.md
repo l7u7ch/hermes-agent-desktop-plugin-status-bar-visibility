@@ -17,7 +17,3 @@ This is a **Desktop-side** plugin. Do not install it in the remote Gateway's LXC
 3. Enable **Status Bar Visibility** yourself.
 
 The plugin is deliberately shipped disabled by default. Disabling or removing it restores the standard status bar.
-
-## Compatibility
-
-This CSS override is scoped to `[data-slot="statusbar"]` and relies on the current Desktop icon classes (`lucide-command` and `lucide-hash`). Hermes Desktop updates may change those implementation details; if that happens, disable this plugin and update its selectors.
