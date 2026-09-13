@@ -3,7 +3,6 @@
 // so this plugin replaces only those disabled DOM rows while the menu is open.
 
 const ID = "b2766cf5-7927-43c7-9453-f499fe3370b5";
-const LEGACY_ID = "status-bar-cleanup";
 const STYLE_ID = "hermes-status-bar-visibility-style";
 const HIDDEN_ATTRIBUTE = "data-status-bar-visibility-hidden";
 const CORE_ROW_ATTRIBUTE = "data-status-bar-visibility-core-row";
@@ -178,15 +177,10 @@ export default {
     document.head.append(style);
 
     const localStorageKey = `${ID}:${STORAGE_KEY}`;
-    const legacyLocalStorageKey = `${LEGACY_ID}:${STORAGE_KEY}`;
     let visibility = { ...DEFAULT_HIDDEN };
     try {
       visibility = normalizeVisibility(
-        JSON.parse(
-          window.localStorage.getItem(localStorageKey) ||
-            window.localStorage.getItem(legacyLocalStorageKey) ||
-            "null",
-        ),
+        JSON.parse(window.localStorage.getItem(localStorageKey) || "null"),
       );
     } catch {
       // Invalid old data falls back to the default hidden state.
@@ -203,7 +197,6 @@ export default {
           localStorageKey,
           JSON.stringify(visibility),
         );
-        window.localStorage.removeItem(legacyLocalStorageKey);
       } catch {
         // Current-window toggling still works if persistence is unavailable.
       }
