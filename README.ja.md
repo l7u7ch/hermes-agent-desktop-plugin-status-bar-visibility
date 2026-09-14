@@ -8,6 +8,8 @@
 
 ステータスバーのコンテキストメニューから、各項目の表示状態を切り替えられます。
 
+![ステータスバー項目の表示状態を切り替える前後](status-bar-visibility-before-after.png.png)
+
 ## 1. インストール
 
 ### 1.1. Hermes Agent Desktop からインストールする
