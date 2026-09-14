@@ -1,5 +1,7 @@
 # Status Bar Visibility
 
+[English](README.md) | [日本語](README.ja.md)
+
 標準では表示／非表示を切り替えられない、次のステータスバー項目を非表示にできる Hermes Agent Desktop Plugin です。
 
 - Command Center
