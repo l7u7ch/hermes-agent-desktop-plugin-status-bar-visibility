@@ -10,7 +10,7 @@
 
 ステータスバーのコンテキストメニューから、各項目の表示状態を切り替えられます。
 
-![ステータスバー項目の表示状態を切り替える前後](status-bar-visibility-before-after.png.png)
+![ステータスバー項目の表示状態を切り替える前後](status-bar-visibility-before-after.png)
 
 ## 1. インストール
 
