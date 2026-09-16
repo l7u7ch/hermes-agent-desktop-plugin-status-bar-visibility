@@ -14,8 +14,9 @@
 
 ### 1.1. Hermes Agent Desktop からインストールする
 
-1. [インストールリンク](hermes://plugin/install?repo=l7u7ch/hermes-agent-desktop-plugin-status-bar-visibility)を開いてインストールします。Hermes Agent Desktop が起動し、インストール画面が表示されます。
-2. インストールリンクを開けない場合は、Hermes Agent Desktop の **設定 → プラグイン → Install from Git** を開き、`l7u7ch/hermes-agent-desktop-plugin-status-bar-visibility` を指定してインストールします。
+1. 次の URI をブラウザーのアドレスバーに貼り付けて開きます。Hermes Agent Desktop が起動し、インストール画面が表示されます。GitHub 上では `hermes://` リンクを直接開けないため、この手順を使用してください。
+   `hermes://plugin/install?repo=l7u7ch/hermes-agent-desktop-plugin-status-bar-visibility`
+2. URI を開けない場合は、Hermes Agent Desktop の **設定 → プラグイン → Install from Git** を開き、`l7u7ch/hermes-agent-desktop-plugin-status-bar-visibility` を指定してインストールします。
 3. **Status Bar Visibility** を有効にします。
 
 ### 1.2. 手動でインストールする

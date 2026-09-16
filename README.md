@@ -14,8 +14,9 @@ You can toggle the visibility of each item from the status bar's context menu.
 
 ### 1.1. Install from Hermes Agent Desktop
 
-1. Open the [installation link](hermes://plugin/install?repo=l7u7ch/hermes-agent-desktop-plugin-status-bar-visibility). Hermes Agent Desktop will open and display the installation screen.
-2. If you cannot open the installation link, open **Settings → Plugins → Install from Git** in Hermes Agent Desktop, then install `l7u7ch/hermes-agent-desktop-plugin-status-bar-visibility`.
+1. Copy the following URI into your browser's address bar and open it. Hermes Agent Desktop will open and display the installation screen. Use this procedure because GitHub does not allow `hermes://` links to be opened directly.
+   `hermes://plugin/install?repo=l7u7ch/hermes-agent-desktop-plugin-status-bar-visibility`
+2. If you cannot open the URI, open **Settings → Plugins → Install from Git** in Hermes Agent Desktop, then install `l7u7ch/hermes-agent-desktop-plugin-status-bar-visibility`.
 3. Enable **Status Bar Visibility**.
 
 ### 1.2. Install manually
