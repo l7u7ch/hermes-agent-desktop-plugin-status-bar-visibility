@@ -176,9 +176,24 @@ export default {
       // Invalid old data falls back to the default hidden state.
     }
 
+    let observedStatusBar = null;
+    const statusBarObserver = new MutationObserver(() => scheduleRender());
+    const observeStatusBar = () => {
+      const statusBar = document.querySelector('footer[data-slot="statusbar"]');
+      if (statusBar === observedStatusBar) return;
+
+      statusBarObserver.disconnect();
+      observedStatusBar = statusBar;
+      if (statusBar)
+        statusBarObserver.observe(statusBar, {
+          childList: true,
+          subtree: true,
+        });
+    };
     const render = () => {
       applyVisibility(visibility);
       patchMenus(visibility, setVisibility);
+      observeStatusBar();
     };
     const setVisibility = (key) => {
       visibility = { ...visibility, [key]: !visibility[key] };
@@ -193,18 +208,26 @@ export default {
       render();
     };
 
-    // Patch only after the native context menu has mounted. Do not watch the
-    // entire document: this plugin itself adds menu children, and a global
-    // child-list observer can recursively schedule renderer work.
+    let renderScheduled = false;
     const scheduleRender = () => {
+      if (renderScheduled) return;
+      renderScheduled = true;
       window.setTimeout(render, 0);
-      window.setTimeout(render, 32);
+      window.setTimeout(() => {
+        render();
+        renderScheduled = false;
+      }, 32);
     };
+
+    // Backend version can mount after the plugin's initial render, once the
+    // remote status snapshot arrives. The observer is scoped to the status bar;
+    // menu rows are portalled elsewhere, so it cannot observe nodes we add.
     document.addEventListener("contextmenu", scheduleRender, true);
 
     render();
 
     ctx.onDispose(() => {
+      statusBarObserver.disconnect();
       document.removeEventListener("contextmenu", scheduleRender, true);
       document.querySelectorAll(`[${HIDDEN_ATTRIBUTE}]`).forEach(show);
       document.querySelectorAll(`[${CORE_ROW_ATTRIBUTE}]`).forEach((row) => {
