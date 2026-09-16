@@ -132,6 +132,7 @@ function createCustomRow(template, item, visibility, setVisibility) {
 }
 
 function patchMenus(visibility, setVisibility) {
+  let patched = false;
   for (const menu of document.querySelectorAll('[role="menu"]')) {
     const coreRows = Array.from(
       menu.querySelectorAll(
@@ -147,6 +148,7 @@ function patchMenus(visibility, setVisibility) {
 
       coreRow.setAttribute(CORE_ROW_ATTRIBUTE, "");
       coreRow.style.setProperty("display", "none", "important");
+      patched = true;
 
       let customRow = menu.querySelector(
         `[${CUSTOM_ROW_ATTRIBUTE}="${item.key}"]`,
@@ -159,6 +161,7 @@ function patchMenus(visibility, setVisibility) {
       }
     }
   }
+  return patched;
 }
 
 export default {
@@ -192,7 +195,6 @@ export default {
     };
     const render = () => {
       applyVisibility(visibility);
-      patchMenus(visibility, setVisibility);
       observeStatusBar();
     };
     const setVisibility = (key) => {
@@ -206,6 +208,7 @@ export default {
         // Current-window toggling still works if persistence is unavailable.
       }
       render();
+      patchMenus(visibility, setVisibility);
     };
 
     let renderScheduled = false;
@@ -219,16 +222,39 @@ export default {
       }, 32);
     };
 
+    let menuObserver = null;
+    let menuObserverTimeout = null;
+    const stopObservingMenu = () => {
+      menuObserver?.disconnect();
+      menuObserver = null;
+      if (menuObserverTimeout !== null) {
+        window.clearTimeout(menuObserverTimeout);
+        menuObserverTimeout = null;
+      }
+    };
+    const observeMenuMount = () => {
+      stopObservingMenu();
+      menuObserver = new MutationObserver(() => {
+        if (patchMenus(visibility, setVisibility)) stopObservingMenu();
+      });
+      menuObserver.observe(document.body, { childList: true, subtree: true });
+      // Do not leave a document-wide observer running if right-click does not
+      // result in a menu. The timer is cleanup only, not menu rendering.
+      menuObserverTimeout = window.setTimeout(stopObservingMenu, 100);
+    };
+
     // Backend version can mount after the plugin's initial render, once the
     // remote status snapshot arrives. The observer is scoped to the status bar;
     // menu rows are portalled elsewhere, so it cannot observe nodes we add.
-    document.addEventListener("contextmenu", scheduleRender, true);
+    document.addEventListener("contextmenu", observeMenuMount, true);
 
     render();
+    patchMenus(visibility, setVisibility);
 
     ctx.onDispose(() => {
       statusBarObserver.disconnect();
-      document.removeEventListener("contextmenu", scheduleRender, true);
+      stopObservingMenu();
+      document.removeEventListener("contextmenu", observeMenuMount, true);
       document.querySelectorAll(`[${HIDDEN_ATTRIBUTE}]`).forEach(show);
       document.querySelectorAll(`[${CORE_ROW_ATTRIBUTE}]`).forEach((row) => {
         row.removeAttribute(CORE_ROW_ATTRIBUTE);
