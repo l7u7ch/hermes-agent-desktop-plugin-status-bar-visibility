@@ -10,8 +10,6 @@ A Hermes Agent Desktop Plugin that can hide the following status-bar items, whos
 
 You can toggle the visibility of each item from the status bar's context menu.
 
-![Before and after toggling status-bar item visibility](status-bar-visibility-before-after.png)
-
 ## 1. Installation
 
 ### 1.1. Install from Hermes Agent Desktop
